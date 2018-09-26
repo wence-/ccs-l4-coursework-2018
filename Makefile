@@ -15,7 +15,7 @@ all: gemm
 
 help:
 	@echo "Available targets are"
-	@echo "  clean: Remove all built artifacts"
+	@echo "  clean: Remove all build artifacts"
 	@echo "  gemm: Build the gemm binary"
 	@echo "  check: Run a simple-minded check of your implementation"
 	@echo "  bench: Run a simple benchmark for square matrices over a range of sizes"

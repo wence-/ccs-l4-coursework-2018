@@ -10,9 +10,9 @@
  * the correct entry is at (ldX*i + j).
  */
 void basic_gemm(int m, int n, int k,
-                       const double *a, int lda,
-                       const double *b, int ldb,
-                       double *c, int ldc)
+                const double *a, int lda,
+                const double *b, int ldb,
+                double *c, int ldc)
 {
     int i, j, p;
     for (i = 0; i < m; i++) {
