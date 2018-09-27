@@ -1,5 +1,5 @@
 CFLAGS = -O3 -march=native
-LDFLAGS =
+LDFLAGS = -lm
 CC = gcc
 
 OBJ = optimised-gemm.o basic-gemm.o
