@@ -20,6 +20,17 @@ void basic_gemm(int, int, int,
                 const double *, int,
                 double *, int);
 
+void alloc_matrix(int m, int n, double **a)
+{
+    posix_memalign((void **)a, 64, m*n*sizeof(**a));
+}
+
+void free_matrix(double **a)
+{
+    free(*a);
+    *a = NULL;
+}
+
 /*
  * Print entries of a matrix.
  * if num_entries is < 0, print all entries, otherwise just print the
@@ -89,10 +100,10 @@ static int check(int m, int n, int k, gemm_fn_t gemm, double *maxdiff)
     int i, j;
     int lda, ldb, ldc;
 
-    a = malloc(m*k * sizeof(double));
-    b = malloc(k*n * sizeof(double));
-    copt = malloc(m*n * sizeof(double));
-    cbasic = malloc(m*n * sizeof(double));
+    alloc_matrix(m, k, &a);
+    alloc_matrix(k, n, &b);
+    alloc_matrix(m, n, &copt);
+    alloc_matrix(m, n, &cbasic);
 
     lda = m;
     ldb = k;
@@ -118,10 +129,10 @@ static int check(int m, int n, int k, gemm_fn_t gemm, double *maxdiff)
         }
     }
 done:
-    free(a);
-    free(b);
-    free(copt);
-    free(cbasic);
+    free_matrix(&a);
+    free_matrix(&b);
+    free_matrix(&copt);
+    free_matrix(&cbasic);
     return (*maxdiff > 1e-3) || (*maxdiff != *maxdiff);
 }
 
@@ -142,9 +153,9 @@ static void bench(int m, int n, int k, gemm_fn_t gemm)
     int repeats, i;
     int lda, ldb, ldc;
 
-    a = malloc(m*k * sizeof(double));
-    b = malloc(k*n * sizeof(double));
-    c = malloc(m*n * sizeof(double));
+    alloc_matrix(m, k, &a);
+    alloc_matrix(k, n, &b);
+    alloc_matrix(m, n, &c);
 
     lda = m;
     ldb = k;
@@ -174,9 +185,9 @@ static void bench(int m, int n, int k, gemm_fn_t gemm)
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end);
     time = diff_time(end, start) / repeats;
     printf("%d %d %d %g %g\n", m, n, k, time, flop);
-    free(a);
-    free(b);
-    free(c);
+    free_matrix(&a);
+    free_matrix(&b);
+    free_matrix(&c);
 }
 
 int main(int argc, char **argv)
