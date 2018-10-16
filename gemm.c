@@ -20,10 +20,25 @@ void basic_gemm(int, int, int,
                 const double *, int,
                 double *, int);
 
+#ifdef _MSC_VER
+#include <malloc.h>
+void alloc_matrix(int m, int n, double **a)
+{
+  *a = _aligned_malloc(m*n*sizeof(**a), 64);
+}
+
+/* Provide stub for drand48 for checking */
+static double drand48()
+{
+  return (double)rand()/(RAND_MAX + 1);
+}
+
+#else   /* !_MSC_VER */
 void alloc_matrix(int m, int n, double **a)
 {
     posix_memalign((void **)a, 64, m*n*sizeof(**a));
 }
+#endif  /* _MSC_VER */
 
 void free_matrix(double **a)
 {
