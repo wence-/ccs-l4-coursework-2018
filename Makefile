@@ -1,6 +1,6 @@
-CFLAGS := -O3 -march=native -D_GNU_SOURCE -Wall -Wextra
+CFLAGS := -O3 -march=native -D_GNU_SOURCE -Wall -Wextra -fopenmp-simd
 LDFLAGS = -lm
-CC = gcc
+CC = cc
 
 OBJ = optimised-gemm.o basic-gemm.o
 
